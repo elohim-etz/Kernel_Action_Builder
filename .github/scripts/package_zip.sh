@@ -10,12 +10,12 @@ TIMESTAMP=$(date +"%Y%m%d-%H%M")
 
 if [ "${KSU_VARIANT}" != "Stock" ]; then
   if [ "${SUSFS_ENABLED}" == "true" ]; then
-    ZIP_NAME="Miku-RM6785-${KSU_VARIANT}-SUSFS-${TIMESTAMP}"
+    ZIP_NAME="${ZIP_NAME_PREFIX}-RM6785-${KSU_VARIANT}-SUSFS-${TIMESTAMP}"
   else
-    ZIP_NAME="Miku-RM6785-${KSU_VARIANT}-${TIMESTAMP}"
+    ZIP_NAME="${ZIP_NAME_PREFIX}-RM6785-${KSU_VARIANT}-${TIMESTAMP}"
   fi
 else
-  ZIP_NAME="Miku-RM6785-Stock-${TIMESTAMP}"
+  ZIP_NAME="${ZIP_NAME_PREFIX}-RM6785-Stock-${TIMESTAMP}"
 fi
 
 zip -r9 "${ZIP_NAME}.zip" . -x '*.git*' > /dev/null 2>&1

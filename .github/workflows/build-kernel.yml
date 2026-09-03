@@ -47,6 +47,11 @@ on:
         description: 'Custom build note (optional)'
         required: false
         default: ''
+      zip_name:
+        description: 'Kernel ZIP name prefix'
+        required: false
+        type: string
+        default: 'Miku'
 
 jobs:
   build:
@@ -154,6 +159,8 @@ jobs:
 
       # ── Package ──────────────────────────────────────────────────────────
       - name: Package with AnyKernel3
+        env:
+          ZIP_NAME_PREFIX: ${{ github.event.inputs.zip_name }}
         run: bash .github/scripts/package_zip.sh
 
       # ── Telegram notifications ────────────────────────────────────────────
