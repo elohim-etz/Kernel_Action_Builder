@@ -4,22 +4,31 @@ cd "${KERNEL_DIR}"
 
 start_time=$(date +%s)
 
-export PATH="${GITHUB_WORKSPACE}/clang/bin:${PATH}"
+export PATH="${CLANG_PATH}:${PATH}"
 export KBUILD_BUILD_USER="elohim-etz"
 export KBUILD_BUILD_HOST="GitHub-Actions"
+
+echo "=== Toolchain ==="
+echo "Type: ${CLANG_TOOLCHAIN}"
+echo "Path: ${CLANG_PATH}"
+"${CLANG_PATH}/clang" --version | head -n 1
 
 mkdir -p out
 
 echo "=== Generating defconfig: ${DEFCONFIG} ===" | tee -a "$BUILD_LOG"
-make O=out ARCH=${ARCH} ${DEFCONFIG} 2>&1 | tee -a "$BUILD_LOG"
+make O=out \
+     ARCH="${ARCH}" \
+     "${DEFCONFIG}" \
+     2>&1 | tee -a "$BUILD_LOG"
 
 echo "=== Starting kernel build ===" | tee -a "$BUILD_LOG"
-make -j$(nproc --all) O=out \
-                      ARCH=${ARCH} \
-                      CC="ccache clang" \
-                      LLVM=1 \
-                      CONFIG_NO_ERROR_ON_MISMATCH=y \
-                      2>&1 | tee -a "$BUILD_LOG"
+make -j"$(nproc --all)" \
+     O=out \
+     ARCH="${ARCH}" \
+     CC="ccache clang" \
+     LLVM=1 \
+     CONFIG_NO_ERROR_ON_MISMATCH=y \
+     2>&1 | tee -a "$BUILD_LOG"
 
 grep -i -E "error:|undefined reference|fatal error" \
   "$BUILD_LOG" > "$ERROR_LOG" || true

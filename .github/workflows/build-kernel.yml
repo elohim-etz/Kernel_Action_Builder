@@ -33,13 +33,12 @@ on:
         required: false
         type: choice
         options:
-          - 'RKSU'
           - 'xxKSU'
           - 'SukiSU'
           - 'ReSukiSU'
-        default: 'RKSU'
+        default: 'ReSukiSU'
       enable_susfs:
-        description: 'Enable SUSFS (RKSU / SukiSU / ReSukiSU only)'
+        description: 'Enable SUSFS'
         required: false
         type: boolean
         default: false
@@ -52,6 +51,14 @@ on:
         required: false
         type: string
         default: 'Miku'
+      clang_toolchain:
+        description: 'Clang Toolchain'
+        required: true
+        type: choice
+        options:
+          - 'AOSP'
+          - 'Neutron'
+        default: 'AOSP'
 
 jobs:
   build:
@@ -109,17 +116,23 @@ jobs:
           INPUT_DEFCONFIG:     ${{ github.event.inputs.defconfig }}
         run: bash .github/scripts/clone_kernel.sh
 
-      # ── Clang toolchain ────────────────────────────────
-      - name: Cache Clang Toolchain
+      # ── Clang toolchain ──────────────────────────────────────────────────
+      - name: Cache AOSP Clang Toolchain
+        if: github.event.inputs.clang_toolchain == 'AOSP'
         uses: actions/cache@v4
         id: cache-clang
         with:
           path: clang
           key: clang-r547379
 
-      - name: Clone Clang Toolchain
-        if: steps.cache-clang.outputs.cache-hit != 'true'
+      - name: Clone AOSP Clang Toolchain
+        if: github.event.inputs.clang_toolchain == 'AOSP' && steps.cache-clang.outputs.cache-hit != 'true'
         run: git clone --depth=1 "$CLANG_REPO" clang
+
+      - name: Setup Clang Toolchain
+        env:
+          INPUT_CLANG_TOOLCHAIN: ${{ github.event.inputs.clang_toolchain }}
+        run: bash .github/scripts/setup_toolchain.sh
 
       # ── AnyKernel3 ─────────────────────────
       - name: Clone AnyKernel3

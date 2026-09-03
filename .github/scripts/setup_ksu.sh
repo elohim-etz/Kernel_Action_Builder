@@ -14,16 +14,6 @@ fi
 
 # ── Variants ────────────────────────────────────────────────────────────────
 case "${KSU_VARIANT_INPUT}" in
-  RKSU)
-    if [ "${ENABLE_SUSFS}" == "true" ]; then
-      curl -LSs "https://raw.githubusercontent.com/rsuntk/KernelSU/main/kernel/setup.sh" | bash -s susfs-rksu-master
-      KSU_BRANCH="susfs-rksu-master"; SUSFS="true"
-    else
-      curl -LSs "https://raw.githubusercontent.com/rsuntk/KernelSU/main/kernel/setup.sh" | bash -s main
-      KSU_BRANCH="main"; SUSFS="false"
-    fi
-    KSU_REPO="https://github.com/rsuntk/KernelSU"
-    ;;
   xxKSU)
     curl -LSs "https://raw.githubusercontent.com/backslashxx/KernelSU/master/kernel/setup.sh" | bash -s master
     KSU_BRANCH="master"; SUSFS="false"
