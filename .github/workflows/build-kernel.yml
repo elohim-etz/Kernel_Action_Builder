@@ -71,8 +71,8 @@ jobs:
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       CLANG_REPO: "https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r547379.git"
-      ANYKERNEL_REPO: "https://github.com/elohim-etz/AK3.git"
-      ANYKERNEL_BRANCH: "mikuchan"
+      ANYKERNEL_REPO: "https://github.com/elohim-etz/AnyKernel3.git"
+      ANYKERNEL_BRANCH: "master"
     steps:
       # ── Checkout ──────────────────────────────────────────────────────────
       - name: Checkout Workflow Repository
