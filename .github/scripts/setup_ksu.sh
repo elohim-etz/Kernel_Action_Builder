@@ -32,10 +32,10 @@ case "${KSU_VARIANT_INPUT}" in
     fi
     KSU_REPO="https://github.com/SukiSU-Ultra/SukiSU-Ultra"
     ;;
-  ReSukiSU)
-    curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash -s main
+  BakaSU)
+    curl -LSs "https://raw.githubusercontent.com/Baka-SU/BakaSU/main/kernel/setup.sh" | bash -s main
     KSU_BRANCH="main"
-    KSU_REPO="https://github.com/ReSukiSU/ReSukiSU"
+    KSU_REPO="https://github.com/Baka-SU/BakaSU"
     SUSFS="${ENABLE_SUSFS}"
     ;;
 esac

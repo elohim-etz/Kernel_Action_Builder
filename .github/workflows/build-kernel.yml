@@ -35,8 +35,8 @@ on:
         options:
           - 'xxKSU'
           - 'SukiSU'
-          - 'ReSukiSU'
-        default: 'ReSukiSU'
+          - 'BakaSU'
+        default: 'BakaSU'
       enable_susfs:
         description: 'Enable SUSFS'
         required: false
