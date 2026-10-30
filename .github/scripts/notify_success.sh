@@ -14,6 +14,20 @@ VARIANT_ESC=$(esc "${BUILD_VARIANT}")
 KSU_ESC=$(esc "${KSU_VARIANT}")
 RUN_URL_ESC=$(esc_url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}")
 
+TOOLCHAIN_NAME="${CLANG_TOOLCHAIN:-Clang}"
+
+if [ -n "${CLANG_PATH}" ] && [ -x "${CLANG_PATH}/clang" ]; then
+  CLANG_VER_STR=$("${CLANG_PATH}/clang" --version | head -n 1 | sed -n 's/.*clang version \([0-9.]*\).*/\1/p')
+  
+  if [ -z "$CLANG_VER_STR" ]; then
+    CLANG_VER_STR="unknown"
+  fi
+  
+  CLANG_ESC=$(esc "${TOOLCHAIN_NAME} ${CLANG_VER_STR}")
+else
+  CLANG_ESC=$(esc "N/A")
+fi
+
 CAPTION_FILE=$(mktemp)
 
 printf '✅ *Build Successful* ✅\n\n'                          >> "$CAPTION_FILE"
@@ -23,6 +37,7 @@ printf '*Commit:* [%s](%s)\n' "${COMMIT_MSG_ESC}" "${COMMIT_URL_ESC}" >> "$CAPTI
 printf '*Time:* %s\n'        "${TIME_ESC}"                    >> "$CAPTION_FILE"
 printf '*Build Variant:* %s\n' "${VARIANT_ESC}"               >> "$CAPTION_FILE"
 printf '*KernelSU:* %s\n'    "${KSU_ESC}"                     >> "$CAPTION_FILE"
+printf '*Clang:* %s\n'       "${CLANG_ESC}"                   >> "$CAPTION_FILE"
 
 if [ "${KSU_VARIANT}" != "Stock" ]; then
   printf '*Manager:* [Download](%s)\n' "$(esc_url "${KSU_REPO}/releases/latest")" >> "$CAPTION_FILE"

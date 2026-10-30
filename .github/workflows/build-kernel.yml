@@ -50,7 +50,7 @@ on:
         description: 'Kernel ZIP name prefix'
         required: false
         type: string
-        default: 'Miku'
+        default: 'Yuri'
       clang_toolchain:
         description: 'Clang Toolchain'
         required: true
@@ -73,6 +73,7 @@ jobs:
       CLANG_REPO: "https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r547379.git"
       ANYKERNEL_REPO: "https://github.com/elohim-etz/AnyKernel3.git"
       ANYKERNEL_BRANCH: "master"
+      CLANG_TOOLCHAIN: ${{ github.event.inputs.clang_toolchain }}
     steps:
       # ── Checkout ──────────────────────────────────────────────────────────
       - name: Checkout Workflow Repository
@@ -130,8 +131,6 @@ jobs:
         run: git clone --depth=1 "$CLANG_REPO" clang
 
       - name: Setup Clang Toolchain
-        env:
-          INPUT_CLANG_TOOLCHAIN: ${{ github.event.inputs.clang_toolchain }}
         run: bash .github/scripts/setup_toolchain.sh
 
       # ── AnyKernel3 ─────────────────────────

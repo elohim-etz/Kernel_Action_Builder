@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-TOOLCHAIN="${INPUT_CLANG_TOOLCHAIN:-AOSP}"
+TOOLCHAIN="${CLANG_TOOLCHAIN:-AOSP}"
 
 case "${TOOLCHAIN}" in
   AOSP)
